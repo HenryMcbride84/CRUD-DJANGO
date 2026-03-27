@@ -1,0 +1,11 @@
+# App usuarios
+apps/usuarios/__pycache__
+apps/usuarios/migrations/__pycache__
+
+crud_app/__pycache__
+
+
+.env
+
+db.sqlite3
+

@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
-def registrar_usuario(request):
-    return HttpResponse("<h1>Registrar usuarios</h1>")
-
+def registrar_usuario(request): 
+    if request.method == 'POST':
+        print(request.POST.get('name'))
+        print(request.POST.get('phone'))
+        print(request.POST.get('email'))
+    return render(request, "formulario.html")
