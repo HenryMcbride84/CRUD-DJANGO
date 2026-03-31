@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+
+#PAra establecer las variables de entorno, se descarga 
 from decouple import config 
 
 
