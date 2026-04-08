@@ -6,6 +6,8 @@ crud_app/__pycache__
 
 
 .env
+/venv/
+/crud/
 
 db.sqlite3
 
