@@ -3,6 +3,9 @@ apps/usuarios/__pycache__
 apps/usuarios/migrations/__pycache__
 
 crud_app/__pycache__
+#App core
+apps/core/__pycache__
+apps/core/migrations/__pycache__
 
 
 .env
