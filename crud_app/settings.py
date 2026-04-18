@@ -141,3 +141,7 @@ STATIC_URL = 'static/'
 
 #Referenciar archivos estaticos (css,javascript,)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#VARIABLES DE REDIRECCION LOGIN Y LOGOUT
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
