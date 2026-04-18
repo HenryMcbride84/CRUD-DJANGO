@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+#ruta gral de las aplicaciones
 
 urlpatterns = [
     #pagina de inicio
@@ -25,3 +26,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.usuarios.urls') ),
 ]
+
