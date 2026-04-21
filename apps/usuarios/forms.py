@@ -33,7 +33,7 @@ class RolForm(forms.ModelForm):
          nombre = self.cleaned_data.get("nombre")
          if not nombre:
              raise forms.ValidationError("Este campo no puede estar vacio")
-         if not re.match(r"^[a-zA-Z]$",nombre):
+         if not re.match(r"^[a-zA-Z]+$",nombre):
              raise forms.ValidationError("Este campo solo acepta letras") 
           
           
@@ -64,7 +64,7 @@ class RolForm2(forms.Form):
          required=True
     )
 
-    correo= forms.EmailField(label="Correo Electronico")
+    """ correo= forms.EmailField(label="Correo Electronico")
 
     correo.widget.attrs.update({"class":"form-control"})
     #max_length=10,label="Telefono",min_length=10,
@@ -74,12 +74,12 @@ class RolForm2(forms.Form):
 
     password= forms.CharField(widget=forms.PasswordInput() )
     password.widget.attrs.update({"class":"form-control"})
-
+ """
     def clean_nombre(self):
          nombre = self.cleaned_data.get("nombre")
          if not nombre:
              raise forms.ValidationError("Este campo no puede estar vacio")
-         if not re.match(r"^[a-zA-Z]$",nombre):
+         if not re.match(r"^[a-zA-Z]+$",nombre):
              raise forms.ValidationError("Este campo solo acepta letras") 
           
           
