@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Rol, Users
 #mis posibles cambios para paginar
@@ -12,12 +12,12 @@ def registrar_usuario(request):
     
     #Para acceder a los registros de la BD  se usa el nombre_modelo.object.all , con lo ultimo se ordenar por id(- de forma descente,sin guion normal)
     #Similar a un select * from Rol order by id_rol
-    roles = Rol.objects.all().order_by('-id_rol')
+    roles = Rol.objects.all().order_by('id_rol').filter(status=True)
     #Se imprime la informacion
     #print(roles)
 
     #INstanciar formulario para registrar roles creado en el archivo forms.py
-    #rol_formulario = RolForm()
+    rol_formulario = RolForm()
     #print(rol_formulario)
     #Obtener parametro atraves de GET
     """ if request.method =='GET':
@@ -27,7 +27,7 @@ def registrar_usuario(request):
                               Q(status__icontains=rol_search))
  """
     #mis posibles cambios para paginar
-    paginator = Paginator(roles,2) #primer atributo lista_elementos, segundo atributo numero de elementos por pagina
+    paginator = Paginator(roles,4) #primer atributo lista_elementos, segundo atributo numero de elementos por pagina
 
     #variable que obtiene el numero de pagina atraves de la URL
     page_number = request.GET.get('usuarios_page')
@@ -46,7 +46,7 @@ def registrar_usuario(request):
         
 
     #Valida si el metodo de la peticion es POST (Enviar) si es asi se ejecuta el codigo interno del if
-    """ if request.method == 'POST':
+    if request.method == 'POST':
         #Corresponden a los campos del formulario.html dentro de templates
      #   print(request.POST.get('name'))
       #  print(request.POST.get('descrip'))
@@ -66,8 +66,9 @@ def registrar_usuario(request):
             registro_rol.id_rol= proximo_id
             print("Entro al print is_valid")
                 
-            #registro_rol.save()
-            print("Se realizo registro")
+            registro_rol.save()
+            messages.success(request,f'Se guardo de manera correcta el registro con id {registro_rol.id_rol}')
+            return redirect('home')
         else:
             messages.error(request, f"No se guardo la informacion {nuevo_registro.errors.as_text()}" )
             return render(request,"formulario.html",context ={ 
@@ -76,8 +77,8 @@ def registrar_usuario(request):
         
 
     })
-     """        
-    rol_formulario_dos= RolForm2()
+            
+    """ rol_formulario_dos= RolForm2()
     
     #Aqui inicia metodo POST formulario dos
     if request.method == 'POST':
@@ -97,13 +98,14 @@ def registrar_usuario(request):
             print(nuevo_registro_dos.cleaned_data)
             #Obtiene la informacion final que recibio el formulario 
 
-           # registro_rol=nuevo_registro_dos.save(commit=False)
-            #registro_rol.id_rol= proximo_id
+            registro_rol=nuevo_registro_dos.save(commit=False)
+            registro_rol.id_rol= proximo_id
             #print("Entro al print is_valid")
 
             
-            #registro_rol.save()
-            print("Se realizo registro")
+            registro_rol.save()
+            messages.success(request,"Se registro el usuario de manera correcta")
+            return redirect('home')
         else:
             messages.error(request, f"No se guardo la informacion {nuevo_registro_dos.errors.as_text()}" )
             return render(request,"formulario.html",context ={ 
@@ -112,14 +114,35 @@ def registrar_usuario(request):
         
 
     })
-        
+ """        
       #CRear diccionario de contexto
     context ={ 
         "roles": usuarios_current_page,
-       # "rol_formulario":rol_formulario,
-        "rol_formulario_dos":rol_formulario_dos
+        "rol_formulario":rol_formulario,
+       # "rol_formulario_dos":rol_formulario_dos
 
     }
       
 
     return render(request, "formulario.html", context)
+
+
+def editar_roles(request,id_rol,nombre):
+    print(id_rol)
+    print(nombre)
+    return redirect('home')
+
+
+def eliminar_roles(request,id_rol):
+    rol= get_object_or_404(Rol,id_rol=id_rol)
+    print(id_rol)
+    print(rol.id_rol)
+    
+    if rol.delete():
+        messages.success(request,f'Se elimino el rol con id{rol.id_rol}, y nombre{rol.nombre}')
+        return redirect('home')
+    else:
+        messages.error(request,f'No se pudo eliminar el con id{rol.id_rol}')
+        return redirect('home')
+    
+   # return redirect('home')

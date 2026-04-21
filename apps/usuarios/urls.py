@@ -5,6 +5,8 @@ from  . import views
 
 urlpatterns = [
     path('usuarios/', views.registrar_usuario,name='registrar-usuario'),
-  
+    #COn esta linea se pasan parametros a una URL int enteros str: cadenas
+    path('usuarios/editar/<int:id_rol>/<str:nombre>',views.editar_roles,name='editar-rol'),
+     path('usuarios/eliminar/<int:id_rol>',views.eliminar_roles,name='eliminar-rol')
                                                     
 ]
