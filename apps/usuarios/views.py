@@ -4,7 +4,7 @@ from .models import Rol, Users
 #mis posibles cambios para paginar
 from django.core.paginator import Paginator
 from django.db.models import Q
-from .forms import RolForm,RolForm2
+from .forms import RolForm,UpdateRolForm
 from django.contrib import messages
 
 # Create your views here.
@@ -18,6 +18,7 @@ def registrar_usuario(request):
 
     #INstanciar formulario para registrar roles creado en el archivo forms.py
     rol_formulario = RolForm()
+    update_rol_formulario = UpdateRolForm()
     #print(rol_formulario)
     #Obtener parametro atraves de GET
     """ if request.method =='GET':
@@ -33,11 +34,6 @@ def registrar_usuario(request):
     page_number = request.GET.get('usuarios_page')
     #variable que Obtiene elementos para mostrar en la pagina actual
     usuarios_current_page = paginator.get_page(page_number)
-
-
-
-    
-
 
     #Ciclo para recorrer todos los roles
     for i in roles:
@@ -73,9 +69,8 @@ def registrar_usuario(request):
             messages.error(request, f"No se guardo la informacion {nuevo_registro.errors.as_text()}" )
             return render(request,"formulario.html",context ={ 
         "roles": usuarios_current_page,
-        "rol_formulario": nuevo_registro
-        
-
+        "rol_formulario": nuevo_registro,
+        "update_rol_formulario" : update_rol_formulario
     })
             
     """ rol_formulario_dos= RolForm2()
@@ -115,11 +110,11 @@ def registrar_usuario(request):
 
     })
  """        
-      #CRear diccionario de contexto
+      #Crear diccionario de contexto
     context ={ 
         "roles": usuarios_current_page,
         "rol_formulario":rol_formulario,
-       # "rol_formulario_dos":rol_formulario_dos
+        "update_rol_formulario" : update_rol_formulario
 
     }
       
@@ -127,9 +122,23 @@ def registrar_usuario(request):
     return render(request, "formulario.html", context)
 
 
-def editar_roles(request,id_rol,nombre):
+def editar_roles(request,id_rol):
     print(id_rol)
-    print(nombre)
+    registro = get_object_or_404(Rol, id_rol=id_rol)
+    if request.method == 'POST':
+        rol_form = UpdateRolForm(request.POST, instance=registro)
+        if rol_form.is_valid():
+            editar_rol_form = rol_form.save(commit=False)
+            editar_rol_form.status = True
+            editar_rol_form.save()
+            messages.success(request, f'Se actualizo la informacion del usuario {rol_form.cleaned_data["nombre"]}')
+            return redirect('registrar-usuario')
+        else:
+            messages.error(request, f'No se pudo actualizar la informacion del usuario {rol_form.cleaned_data["nombre"]}')
+            return redirect('registrar-usuario')
+    else:
+        rol_form = UpdateRolForm(instance=registro)
+
     return redirect('home')
 
 

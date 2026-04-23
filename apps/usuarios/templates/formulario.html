@@ -79,7 +79,7 @@
                                     <div class="text-danger">{{ error }}</div>
                                     {% endfor %}                          
                                                                                 
-                                    <button type="submit" class="btn btn-default">Enviar</button><br>
+                                    <button type="submit" class="btn btn-default mt-4">Enviar</button><br>
                                 </form>
                             </div>
                         </div>
@@ -209,10 +209,10 @@
                             <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Descripcion</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Acciones</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Nombre</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Descripcion</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Status</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -241,13 +241,75 @@
                                         {% endif %}
                                     </td>
                                     <td class="align-middle text-center text-sm">
-                                        <p>{{rol.id_rol}}</p>
+                                        {% comment %} <p>{{rol.id_rol}}</p> {% endcomment %}
                                         
                                         <a href="{% url 'eliminar-rol' rol.id_rol  %}" type="button" class="btn btn-danger btn-sm">Eliminar</a>
-                                        <a href="{% url 'editar-rol' rol.id_rol  rol.nombre %}" type="button" class="btn btn-warning btn-sm">Editar</a>    
-                                        
-                                             
-                                        
+                                        <!-- Button trigger modal -->
+                                        <button 
+                                            id="buttonEdiar"
+                                            data-nombre="{{rol.nombre}}"
+                                            data-descripcion="{{rol.descripcion}}"
+                                            data-estatus="{{rol.status}}"
+                                            type="button" 
+                                            class="btn bg-gradient-warning btn-sm" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editarModal">
+                                            Editar
+                                        </button>
+                                        <div class="col-md-4">
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalMessageTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Editar Rol</h5>
+                                                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{% url "editar-rol" rol.id_rol %}" method="POST">
+                                                            {% csrf_token %}
+                                                                <!--Input rol nombre-->
+                                                                {{update_rol_formulario.nombre.label_tag}}  
+                                                                <input id="inputNombre" type="text" name="{{ update_rol_formulario.nombre.name }}" 
+                                                                value="{{ update_rol_formulario.nombre.value|default_if_none:'' }}" 
+                                                                class="form-control {% if update_rol_formulario.nombre.errors %} is-invalid{% endif %}">
+                                                                {% for error in update_rol_formulario.nombre.errors %}
+                                                                <div class="invalid-feedback">{{ error }}</div>
+                                                                {% endfor %}
+                                                                <!--Input rol descripcion-->
+                                                                {{update_rol_formulario.descripcion.label_tag}}  
+                                                                <input id="inputDescripcion" type="text" name="{{ update_rol_formulario.descripcion.name }}" 
+                                                                value="{{ update_rol_formulario.descripcion.value|default_if_none:'' }}" 
+                                                                class="form-control {% if update_rol_formulario.descripcion.errors %} is-invalid{% endif %}">
+                                                                {% for error in update_rol_formulario.descripcion.errors %}
+                                                                <div class="text-danger">{{ error }}</div>
+                                                                {% endfor %}
+                                                                {% comment %} <!--Input rol estatus-->
+                                                                {{update_rol_formulario.status.label_tag}}
+                                                                <select id="inputStatus" type="text" name="{{ update_rol_formulario.status.name }}" 
+                                                                value="{{ update_rol_formulario.status.value|default_if_none:'' }}" 
+                                                                class="form-control {% if update_rol_formulario.status.errors %} is-invalid{% endif %}">
+                                                                    {% if rol.status %}
+                                                                    <option value="{{rol.status}}" selected>Activo</option>
+                                                                    {% endif %}
+                                                                    <option value="False">Inactivo</option>
+                                                                </select>
+                                                                {% for error in update_rol_formulario.status.errors %}
+                                                                <div class="text-danger">{{ error }}</div>
+                                                                {% endfor %}   {% endcomment %}                        
+                                                                <!--Botones del modal-->
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                    <button type="submit" class="btn bg-gradient-primary">Enviar</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     {% comment %} <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
@@ -299,230 +361,7 @@
                 </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                    <h6>Projects table</h6>
-                    </div>
-                    <div class="card-body px-0 pt-0 pb-2">
-                    <div class="table-responsive p-0">
-                        <table class="table align-items-center justify-content-center mb-0">
-                        <thead>
-                            <tr>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Project</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Budget</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Completion</th>
-                            <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            <td>
-                                <div class="d-flex px-2">
-                                <div>
-                                    <img src="../assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm rounded-circle me-2" alt="spotify">
-                                </div>
-                                <div class="my-auto">
-                                    <h6 class="mb-0 text-sm">Spotify</h6>
-                                </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="text-sm font-weight-bold mb-0">$2,500</p>
-                            </td>
-                            <td>
-                                <span class="text-xs font-weight-bold">working</span>
-                            </td>
-                            <td class="align-middle text-center">
-                                <div class="d-flex align-items-center justify-content-center">
-                                <span class="me-2 text-xs font-weight-bold">60%</span>
-                                <div>
-                                    <div class="progress">
-                                    <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">
-                                <button class="btn btn-link text-secondary mb-0">
-                                <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td>
-                                <div class="d-flex px-2">
-                                <div>
-                                    <img src="../assets/img/small-logos/logo-invision.svg" class="avatar avatar-sm rounded-circle me-2" alt="invision">
-                                </div>
-                                <div class="my-auto">
-                                    <h6 class="mb-0 text-sm">Invision</h6>
-                                </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="text-sm font-weight-bold mb-0">$5,000</p>
-                            </td>
-                            <td>
-                                <span class="text-xs font-weight-bold">done</span>
-                            </td>
-                            <td class="align-middle text-center">
-                                <div class="d-flex align-items-center justify-content-center">
-                                <span class="me-2 text-xs font-weight-bold">100%</span>
-                                <div>
-                                    <div class="progress">
-                                    <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">
-                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td>
-                                <div class="d-flex px-2">
-                                <div>
-                                    <img src="../assets/img/small-logos/logo-jira.svg" class="avatar avatar-sm rounded-circle me-2" alt="jira">
-                                </div>
-                                <div class="my-auto">
-                                    <h6 class="mb-0 text-sm">Jira</h6>
-                                </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="text-sm font-weight-bold mb-0">$3,400</p>
-                            </td>
-                            <td>
-                                <span class="text-xs font-weight-bold">canceled</span>
-                            </td>
-                            <td class="align-middle text-center">
-                                <div class="d-flex align-items-center justify-content-center">
-                                <span class="me-2 text-xs font-weight-bold">30%</span>
-                                <div>
-                                    <div class="progress">
-                                    <div class="progress-bar bg-gradient-danger" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="30" style="width: 30%;"></div>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">
-                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td>
-                                <div class="d-flex px-2">
-                                <div>
-                                    <img src="../assets/img/small-logos/logo-slack.svg" class="avatar avatar-sm rounded-circle me-2" alt="slack">
-                                </div>
-                                <div class="my-auto">
-                                    <h6 class="mb-0 text-sm">Slack</h6>
-                                </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="text-sm font-weight-bold mb-0">$1,000</p>
-                            </td>
-                            <td>
-                                <span class="text-xs font-weight-bold">canceled</span>
-                            </td>
-                            <td class="align-middle text-center">
-                                <div class="d-flex align-items-center justify-content-center">
-                                <span class="me-2 text-xs font-weight-bold">0%</span>
-                                <div>
-                                    <div class="progress">
-                                    <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0" style="width: 0%;"></div>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">
-                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td>
-                                <div class="d-flex px-2">
-                                <div>
-                                    <img src="../assets/img/small-logos/logo-webdev.svg" class="avatar avatar-sm rounded-circle me-2" alt="webdev">
-                                </div>
-                                <div class="my-auto">
-                                    <h6 class="mb-0 text-sm">Webdev</h6>
-                                </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="text-sm font-weight-bold mb-0">$14,000</p>
-                            </td>
-                            <td>
-                                <span class="text-xs font-weight-bold">working</span>
-                            </td>
-                            <td class="align-middle text-center">
-                                <div class="d-flex align-items-center justify-content-center">
-                                <span class="me-2 text-xs font-weight-bold">80%</span>
-                                <div>
-                                    <div class="progress">
-                                    <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="80" style="width: 80%;"></div>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">
-                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td>
-                                <div class="d-flex px-2">
-                                <div>
-                                    <img src="../assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm rounded-circle me-2" alt="xd">
-                                </div>
-                                <div class="my-auto">
-                                    <h6 class="mb-0 text-sm">Adobe XD</h6>
-                                </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="text-sm font-weight-bold mb-0">$2,300</p>
-                            </td>
-                            <td>
-                                <span class="text-xs font-weight-bold">done</span>
-                            </td>
-                            <td class="align-middle text-center">
-                                <div class="d-flex align-items-center justify-content-center">
-                                <span class="me-2 text-xs font-weight-bold">100%</span>
-                                <div>
-                                    <div class="progress">
-                                    <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">
-                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                            </td>
-                            </tr>
-                        </tbody>
-                        </table>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
+            
             <footer class="footer pt-3  ">
                 <div class="container-fluid">
                 <div class="row align-items-center justify-content-lg-between">
@@ -558,6 +397,47 @@
             </div>
     </main>
 </body>
+<!--   Core JS Files   -->
+  <script src="{% static "assets/js/core/popper.min.js" %}"></script>
+  <script src="{% static "assets/js/core/bootstrap.min.js" %}"></script>
+  <script src="{% static "assets/js/plugins/perfect-scrollbar.min.js" %}"></script>
+  <script src="{% static "assets/js/plugins/smooth-scrollbar.min.js" %}"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{% static "assets/js/soft-ui-dashboard.min.js" %}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        //Acceder al elemento modal a traves del DOM
+        var editarModal = document.getElementById('editarModal');
+        
+        editarModal.addEventListener("show.bs.modal", function(event) {
+            var button = event.relatedTarget;
+
+            //Datos del boton
+            var nombreRol = button.getAttribute('data-nombre');
+            var descripcionRol = button.getAttribute('data-descripcion');
+            var estatusRol = button.getAttribute('data-status');
+            
+            console.log(descripcionRol, estatusRol)
+
+            document.getElementById('inputNombre').value = nombreRol;
+            document.getElementById('inputDescripcion').value = descripcionRol;
+            document.getElementById('id_status').value = estatusRol;
+        })
+
+    })
+</script>
 
 {% endblock content %}
 

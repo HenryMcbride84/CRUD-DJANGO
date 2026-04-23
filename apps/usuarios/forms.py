@@ -47,24 +47,30 @@ class RolForm(forms.ModelForm):
          
          return descripcion
 
-
-class RolForm2(forms.Form):
+class UpdateRolForm(forms.ModelForm):
     
+    class Meta:
+          model= Rol 
+          fields = ['nombre','descripcion','status']
+          
     STATUS = {
          "True":"Activo",
          "False":"Inactivo"
     }
      
     nombre = forms.CharField(max_length=50,label="Nombre")
+    nombre.widget.attrs.update({"class":"form-control text-align-left"})
+
     descripcion = forms.CharField(max_length=250,label="Descripcion")
-    descripcion.widget.attrs.update({"class":"form-control"})
-    status = forms.ChoiceField(
+    descripcion.widget.attrs.update({"class":"form-control text-align-left"})
+
+    """ status = forms.ChoiceField(
          choices= list(STATUS.items()) ,
-         widget= forms.Select(attrs={"class":"form-control"}) ,
+         widget= forms.Select(attrs={"class":"form-control text-align-left"}) ,
          required=True
     )
 
-    """ correo= forms.EmailField(label="Correo Electronico")
+    correo= forms.EmailField(label="Correo Electronico")
 
     correo.widget.attrs.update({"class":"form-control"})
     #max_length=10,label="Telefono",min_length=10,
@@ -73,8 +79,8 @@ class RolForm2(forms.Form):
     telefono.widget.attrs.update({"class":"form-control"})
 
     password= forms.CharField(widget=forms.PasswordInput() )
-    password.widget.attrs.update({"class":"form-control"})
- """
+    password.widget.attrs.update({"class":"form-control"}) """
+
     def clean_nombre(self):
          nombre = self.cleaned_data.get("nombre")
          if not nombre:
@@ -93,7 +99,7 @@ class RolForm2(forms.Form):
          
          return descripcion
     
-    def clean_telefono(self):
+    """ def clean_telefono(self):
          telefono = self.cleaned_data.get("telefono")
          if not telefono:
              raise forms.ValidationError("Este campo no puede estar vacio")
@@ -110,4 +116,4 @@ class RolForm2(forms.Form):
          if not re.match(r"\A\w*@gmail.com",correo):
              raise forms.ValidationError("Verifique que su correo electronico este bien escrito y sea de gmail ")
          
-         return correo
+         return correo """

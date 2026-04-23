@@ -4,7 +4,29 @@
         {% include "core/menu.html" %}
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             {% include "core/navbar.html" %}
-            <div class="container-fluid py-4">
+            <div class="row pt-4 mx-4">
+                {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span class="alert-text"><i class="ni ni-circle-08 me-2" aria-hidden="true"></i><strong>¡NUEVO!</strong> {{ message|safe }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    {% elif message.tags == 'info' %}
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <span class="alert-text"><i class="ni ni-circle-08 me-2" aria-hidden="true"></i><strong>¡ACTUALIZACIÓN!</strong> {{ message|safe }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    {% elif message.tags == 'error' %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span class="alert-text"><i class="ni ni-circle-08 me-2" aria-hidden="true"></i><strong>¡ERROR!</strong> {{ message|safe }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+    <div class="container-fluid py-4">
         <div class="row">
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
