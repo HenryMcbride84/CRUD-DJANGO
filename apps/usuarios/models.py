@@ -21,11 +21,11 @@ class Rol(models.Model):
         db_table= 'rol'    
 
 
-class Users(models.Model):
+class Usuarios(models.Model):
     id_user = models.AutoField(primary_key=True)
     username = models.CharField(max_length=50, blank=True,null=True)
     password= models.CharField(max_length=255)
     id_rol = models.ForeignKey(Rol, null=True, on_delete=models.CASCADE,db_column='id_rol')
 
     class Meta:
-         db_table='users'
+         db_table='usuarios'

@@ -52,7 +52,7 @@ DJANGO_APPS = [
 LOCAL_APPS=[
     'apps.usuarios',
     'apps.core',
-    
+    'apps.transacciones'
 
 ]
 
@@ -94,6 +94,7 @@ WSGI_APPLICATION = 'crud_app.wsgi.application'
 
 DATABASES = {
     "default": {
+        
         "ENGINE": "django.db.backends.postgresql_psycopg2", #definir adatpatdor
         "NAME": config('DB_NAME'),
         "USER": config('DB_USER'),

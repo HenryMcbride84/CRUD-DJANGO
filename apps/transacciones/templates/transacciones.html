@@ -1,0 +1,98 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %} 
+<body class="g-sidenav-show  bg-gray-100">
+     {% include "core/menu.html" %}
+    <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+        
+        <!-- Navbar -->
+        {% include "core/navbar.html" %}
+        <!-- End Navbar -->
+        <div class="row pt-4 mx-4">
+            {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span class="alert-text"><i class="ni ni-circle-08 me-2" aria-hidden="true"></i><strong>¡NUEVO!</strong> {{ message|safe }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                {% elif message.tags == 'info' %}
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <span class="alert-text"><i class="ni ni-circle-08 me-2" aria-hidden="true"></i><strong>¡ACTUALIZACIÓN!</strong> {{ message|safe }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                {% elif message.tags == 'error' %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span class="alert-text"><i class="ni ni-circle-08 me-2" aria-hidden="true"></i><strong>¡ERROR!</strong> {{ message|safe }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>          
+        <!--Inicio FOrmulario modificado por mi-->
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="col-6">
+                           <div class="card">
+                                <div class="table-responsive">
+                                    <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Placa</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">No.Economico</th>
+                                        {% comment %} <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Technology</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>
+                                        <th class="text-secondary opacity-7"></th> {% endcomment %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for unidad_transporte in unidades_transporte  %}
+                                        <tr>
+                                            <td class="align-middle text-center text-sm">
+                                                
+                                                
+                                                <div class="d-flex flex-column justify-content-center text-center">
+                                                    <h6 class="mb-0 text-xs">{{ unidad_transporte.placa}}</h6>
+                                                    
+                                                
+                                                </div>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                               <h6 class="mb-0 text-xs">{{ unidad_transporte.no_economico}}</h6>
+                                                
+                                            </td>
+                                            
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                    </table>
+                                </div>
+                                </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul>
+            {% for pronombre  in lista_pronombres  %}
+            <li>{{pronombre}}</li>
+            {% endfor %}
+        </ul>
+    </main>
+
+</body>         
+
+{% comment %} <h2>Placas</h2>
+<ul>
+    {% for unidad_transporte  in unidades_transporte  %}
+        <li>{{unidad_transporte.placa}}</li>  
+    {% endfor %}
+</ul>
+ {% endcomment %}
+
+
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Rol, Users
+from .models import Rol, Usuarios
 #mis posibles cambios para paginar
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -147,7 +147,10 @@ def eliminar_roles(request,id_rol):
     print(id_rol)
     print(rol.id_rol)
     
-    if rol.delete():
+   
+    if  rol.status:
+        rol.status=False
+        rol.save()
         messages.success(request,f'Se elimino el rol con id{rol.id_rol}, y nombre{rol.nombre}')
         return redirect('home')
     else:

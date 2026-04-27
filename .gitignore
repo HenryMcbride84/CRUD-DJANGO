@@ -6,7 +6,9 @@ crud_app/__pycache__
 #App core
 apps/core/__pycache__
 apps/core/migrations/__pycache__
-
+#App transacciones
+apps/transacciones/__pycache__
+apps/transacciones/migrations/__pycache__
 
 .env
 /venv/
