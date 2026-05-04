@@ -6,8 +6,10 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from .forms import RolForm,UpdateRolForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def registrar_usuario(request):
     
     #Para acceder a los registros de la BD  se usa el nombre_modelo.object.all , con lo ultimo se ordenar por id(- de forma descente,sin guion normal)
@@ -26,7 +28,7 @@ def registrar_usuario(request):
         roles = roles.filter( Q(nombre__icontains=rol_search)|
                               Q(descripcion__icontains=rol_search)|
                               Q(status__icontains=rol_search))
- """
+    """
     #mis posibles cambios para paginar
     paginator = Paginator(roles,4) #primer atributo lista_elementos, segundo atributo numero de elementos por pagina
 
@@ -44,9 +46,9 @@ def registrar_usuario(request):
     #Valida si el metodo de la peticion es POST (Enviar) si es asi se ejecuta el codigo interno del if
     if request.method == 'POST':
         #Corresponden a los campos del formulario.html dentro de templates
-     #   print(request.POST.get('name'))
-      #  print(request.POST.get('descrip'))
-       # print(request.POST.get('status'))
+        #print(request.POST.get('name'))
+        #print(request.POST.get('descrip'))
+        #print(request.POST.get('status'))
 
 
         #Hacer registro de la informacion
@@ -68,10 +70,10 @@ def registrar_usuario(request):
         else:
             messages.error(request, f"No se guardo la informacion {nuevo_registro.errors.as_text()}" )
             return render(request,"formulario.html",context ={ 
-        "roles": usuarios_current_page,
-        "rol_formulario": nuevo_registro,
-        "update_rol_formulario" : update_rol_formulario
-    })
+                "roles": usuarios_current_page,
+                "rol_formulario": nuevo_registro,
+                "update_rol_formulario" : update_rol_formulario
+            })
             
     """ rol_formulario_dos= RolForm2()
     
@@ -109,16 +111,14 @@ def registrar_usuario(request):
         
 
     })
- """        
+    """        
       #Crear diccionario de contexto
     context ={ 
         "roles": usuarios_current_page,
         "rol_formulario":rol_formulario,
         "update_rol_formulario" : update_rol_formulario
-
     }
-      
-
+    
     return render(request, "formulario.html", context)
 
 
@@ -132,14 +132,14 @@ def editar_roles(request,id_rol):
             editar_rol_form.status = True
             editar_rol_form.save()
             messages.success(request, f'Se actualizo la informacion del usuario {rol_form.cleaned_data["nombre"]}')
-            return redirect('registrar-usuario')
+            return redirect('registrar-roles')
         else:
             messages.error(request, f'No se pudo actualizar la informacion del usuario {rol_form.cleaned_data["nombre"]}')
-            return redirect('registrar-usuario')
+            return redirect('registrar-roles')
     else:
         rol_form = UpdateRolForm(instance=registro)
 
-    return redirect('home')
+    return redirect('registrar-roles')
 
 
 def eliminar_roles(request,id_rol):
@@ -148,13 +148,11 @@ def eliminar_roles(request,id_rol):
     print(rol.id_rol)
     
    
-    if  rol.status:
+    if rol.status:
         rol.status=False
         rol.save()
-        messages.success(request,f'Se elimino el rol con id{rol.id_rol}, y nombre{rol.nombre}')
-        return redirect('home')
+        messages.success(request,f'Se elimino el rol con id {rol.id_rol}, y nombre {rol.nombre}')
+        return redirect('registrar-roles')
     else:
-        messages.error(request,f'No se pudo eliminar el con id{rol.id_rol}')
-        return redirect('home')
-    
-   # return redirect('home')
+        messages.error(request,f'No se pudo eliminar el con id {rol.id_rol}')
+        return redirect('registrar-roles')

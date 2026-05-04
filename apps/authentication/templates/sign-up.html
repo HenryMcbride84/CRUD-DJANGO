@@ -1,11 +1,9 @@
-
 {% extends "core/base.html" %}
-
 {% load static %}
 {% block content %}  
     
     <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-transparent mt-4">
+  {% comment %} <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-transparent mt-4">
     <div class="container">
       <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="../pages/dashboards/default.html">
         Soft UI Dashboard
@@ -1199,7 +1197,7 @@
         </ul>
       </div>
     </div>
-  </nav>
+  </nav> {% endcomment %}
   <!-- End Navbar -->
   <div class="row pt-4 mx-4">
     {% if messages %}
@@ -1229,8 +1227,8 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mb-2 mt-5">Welcome!</h1>
-            <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for free.</p>
+            <h1 class="text-white mb-2 mt-5">¡Bienvenido!</h1>
+            <p class="text-lead text-white">Ingresa los datos solicitados para crear una nueva cuenta.</p>
           </div>
         </div>
       </div>
@@ -1239,7 +1237,7 @@
       <div class="row mt-lg-n10 mt-md-n11 mt-n10">
         <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
           <div class="card z-index-0">
-            <div class="card-header text-center pt-4">
+            {% comment %} <div class="card-header text-center pt-4">
               <h5>Register with</h5>
             </div>
             <div class="row px-xl-5 px-sm-4 px-3">
@@ -1285,7 +1283,7 @@
                   or
                 </p>
               </div>
-            </div>
+            </div> {% endcomment %}
             <div class="card-body">
               <form method="POST" role="form text-left">
                 {% csrf_token %}
@@ -1304,13 +1302,41 @@
                     I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
                   </label>
                 </div> {% endcomment %}
-
-                {{registrar_form}}
+                {{registrar_form.username.label_tag}}
+                <input type="text" name="username" class="form-control{% if registrar_form.username.errors %} is-invalid{% endif %}">
+                {% for error in registrar_form.username.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                {{registrar_form.first_name.label_tag}}
+                <input type="text" name="first_name" class="form-control{% if registrar_form.first_name.errors %} is-invalid{% endif %}">
+                {% for error in registrar_form.first_name.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                {{registrar_form.last_name.label_tag}}
+                <input type="text" name="last_name" class="form-control{% if registrar_form.last_name.errors %} is-invalid{% endif %}">
+                {% for error in registrar_form.last_name.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                {{registrar_form.email.label_tag}}
+                <input type="email" name="email" class="form-control{% if registrar_form.email.errors %} is-invalid{% endif %}">
+                {% for error in registrar_form.email.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                {{registrar_form.password1.label_tag}}
+                <input type="password" name="password1" class="form-control{% if registrar_form.password1.errors %} is-invalid{% endif %}">
+                {% for error in registrar_form.password1.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                {{registrar_form.password2.label_tag}}
+                <input type="password" name="password2" class="form-control{% if registrar_form.password2.errors %} is-invalid{% endif %}">
+                {% for error in registrar_form.password2.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
 
                 <div class="text-center">
                   <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Registrar</button>
                 </div>
-                <p class="text-sm mt-3 mb-0">Already have an account? <a href="javascript:;" class="text-dark font-weight-bolder">Sign in</a></p>
+                <p class="text-sm mt-3 mb-0">Already have an account? <a href="{% url "sign-in" %}" class="text-dark font-weight-bolder">Sign in</a></p>
               </form>
             </div>
           </div>
@@ -1389,6 +1415,6 @@
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
+  <script src="{% static "assets/js/soft-ui-dashboard.min.js" %}"></script>
 
 {% endblock content%}

@@ -50,6 +50,7 @@ DJANGO_APPS = [
 
 #aplicaciones del proyecto 
 LOCAL_APPS=[
+    'apps.authentication',
     'apps.usuarios',
     'apps.core',
     'apps.transacciones'
