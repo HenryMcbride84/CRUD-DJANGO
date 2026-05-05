@@ -20,6 +20,7 @@ def registrar_usuario(request):
 
     #INstanciar formulario para registrar roles creado en el archivo forms.py
     rol_formulario = RolForm()
+    print(rol_formulario)
     update_rol_formulario = UpdateRolForm()
     #print(rol_formulario)
     #Obtener parametro atraves de GET
@@ -135,7 +136,7 @@ def editar_roles(request,id_rol):
             return redirect('registrar-roles')
         else:
             messages.error(request, f'No se pudo actualizar la informacion del usuario {rol_form.cleaned_data["nombre"]}')
-            return redirect('registrar-roles')
+            return render(request, "formulario.html",{"rol_formulario":rol_form})
     else:
         rol_form = UpdateRolForm(instance=registro)
 
@@ -156,3 +157,6 @@ def eliminar_roles(request,id_rol):
     else:
         messages.error(request,f'No se pudo eliminar el con id {rol.id_rol}')
         return redirect('registrar-roles')
+
+def perfil(request):
+    return HttpResponse("Este es un mensaje dentro de un objeto")

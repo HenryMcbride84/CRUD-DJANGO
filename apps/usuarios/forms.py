@@ -2,6 +2,28 @@ from django import forms
 from .models import Rol
 import re
 
+class FormBase(forms.Form): #<= Se utiliza cuando queremos crear el formulario de forma personalizada
+    #Se utiliza cuando no necesitamos reutilizar o referenciar un Modelo
+    #Dentro debemos "mapear" cada input de nuestro formulario (como en el mapeo de un modelo)
+    pass
+
+class FormModel(forms.ModelForm): #<= Se utiliza cuando queremos abstraer o reutilizar un modelo (una tabla en una BBDD)
+    #Se utiliza cuando tenemos el Modelo y lo queremos hacer una referencia rapida
+    #Solamente reutilizamos el modelo que queremos referenciar y los campos que queremos utilizar (el campo debe estar 
+    # mapeado en tu modelo)
+    pass
+
+#En ambos podemos acceder a la informacion clean_data, para posteriormente aplicar la validacion de datos
+
+#Estructura para validar un dato obtenido en un Formulario
+""" def clean_descripcion(self):
+         descripcion = self.cleaned_data.get("descripcion")
+         if not descripcion:
+             raise forms.ValidationError("Este campo no puede estar vacio")
+         
+         return descripcion """
+
+
 class RolForm(forms.ModelForm):
      STATUS = {
          "True":"Activo",
