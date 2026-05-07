@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Rol, Usuarios
+from .models import Rol,Perfil
 #mis posibles cambios para paginar
 from django.core.paginator import Paginator
 from django.db.models import Q
-from .forms import RolForm,UpdateRolForm
+from .forms import RolForm,UpdateRolForm,PerfilForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -158,5 +158,35 @@ def eliminar_roles(request,id_rol):
         messages.error(request,f'No se pudo eliminar el con id {rol.id_rol}')
         return redirect('registrar-roles')
 
-def perfil(request):
-    return HttpResponse("Este es un mensaje dentro de un objeto")
+@login_required
+def perfil(request,id_usuario):
+    
+
+    usuario = get_object_or_404(Perfil,pk=id_usuario)
+    
+
+    if request.method == "POST":
+        perfil_form = PerfilForm(data= request.POST)
+
+        if perfil_form.is_valid():
+            
+            perfil_edit=perfil_form.save(commit=False)
+            perfil_edit.id =usuario.id
+            perfil_edit.save()
+            messages.success(request,"Se han modificado los datos correctamente")
+            return redirect("home")
+
+        else:
+            messages.error(request,"No se han podido modificar los datos")
+            return render(request,"profile.html",{'perfilform':perfil_form})
+
+    else:
+         perfilform= PerfilForm()
+        
+    context={'usuario':usuario,
+             'perfilform': perfilform
+             
+             }
+
+
+    return render(request,"profile.html",context)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Rol
+from .models import Rol,Perfil
 import re
 
 class FormBase(forms.Form): #<= Se utiliza cuando queremos crear el formulario de forma personalizada
@@ -11,6 +11,10 @@ class FormModel(forms.ModelForm): #<= Se utiliza cuando queremos abstraer o reut
     #Se utiliza cuando tenemos el Modelo y lo queremos hacer una referencia rapida
     #Solamente reutilizamos el modelo que queremos referenciar y los campos que queremos utilizar (el campo debe estar 
     # mapeado en tu modelo)
+    #Usar una meta clase para referenciar el modelo que se va a mapear
+    """ class Meta:
+        model = {NOmbre_Modelo}
+        fields = [campos del modelo] """
     pass
 
 #En ambos podemos acceder a la informacion clean_data, para posteriormente aplicar la validacion de datos
@@ -70,6 +74,7 @@ class RolForm(forms.ModelForm):
          return descripcion
 
 class UpdateRolForm(forms.ModelForm):
+
     
     class Meta:
           model= Rol 
@@ -139,3 +144,10 @@ class UpdateRolForm(forms.ModelForm):
              raise forms.ValidationError("Verifique que su correo electronico este bien escrito y sea de gmail ")
          
          return correo """
+
+
+class PerfilForm(forms.ModelForm):
+    class Meta:
+        model =Perfil
+        #fields = '__all__' agrega todos los campos de mi modelo
+        fields=["name","telefono","email"]
