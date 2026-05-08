@@ -320,7 +320,7 @@
                                                 <form id="formEditarRol" method="POST" >
                                                 {% csrf_token %}
                                                     <!--Input rol nombre-->
-                                                    <input type="text" id="inputIdRol">
+                                                    <input type="hidden" id="inputIdRol">
                                                     {{update_rol_formulario.nombre.label_tag}}  
                                                     <input id="inputNombre" type="text" name="{{ update_rol_formulario.nombre.name }}" 
                                                     value="{{ update_rol_formulario.nombre.value|default_if_none:'' }}" 

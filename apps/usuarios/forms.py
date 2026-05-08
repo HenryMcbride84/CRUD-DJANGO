@@ -147,6 +147,13 @@ class UpdateRolForm(forms.ModelForm):
 
 
 class PerfilForm(forms.ModelForm):
+    def __init__(self,*args,**kwargs): 
+        super().__init__(*args,**kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['telefono'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        
+
     class Meta:
         model =Perfil
         #fields = '__all__' agrega todos los campos de mi modelo
