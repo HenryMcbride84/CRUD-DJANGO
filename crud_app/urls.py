@@ -26,6 +26,7 @@ urlpatterns = [
     path('',include('apps.core.urls')),
     path('accounts/',include('django.contrib.auth.urls')),# manejar login de usuarios
     path('', include('apps.usuarios.urls') ),
-    path('',include('apps.transacciones.urls'))
+    path('',include('apps.transacciones.urls')),
+    path('',include('apps.tasks.urls')),
 ]
 

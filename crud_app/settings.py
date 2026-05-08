@@ -53,7 +53,9 @@ LOCAL_APPS=[
     'apps.authentication',
     'apps.usuarios',
     'apps.core',
-    'apps.transacciones'
+    'apps.transacciones',
+    'apps.tasks',
+
 
 ]
 

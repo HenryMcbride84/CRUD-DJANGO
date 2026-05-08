@@ -1,0 +1,138 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+
+
+<div class="container">
+    {% include "core/menu.html" %} 
+    {% include "core/navbar.html" %}
+    {% comment %} INICIO TABLA {% endcomment %}
+<div class="card">
+
+    {% comment %} FORMULARIO {% endcomment %}
+    <form>
+        <div class="row">
+            <div class="col-md-6">
+            <div class="form-group">
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Buscar informacion" name="buscar">
+            </div>
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
+                <button type="submit" class="btn btn-info">Buscar</button>
+            </div>
+            </div>
+        </div>
+
+    </form>
+
+  {% comment %}   FIN FORMULARIO {% endcomment %}
+
+  <div class="table-responsive">
+    <table class="table align-items-center mb-0">
+      <thead>
+        <tr>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Perfil</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Descripcion</th>
+           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Estatus</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for x in pagina  %}
+        
+        <tr>
+            <td>
+            <div class="d-flex px-2 py-1">
+              
+              <div class="d-flex flex-column justify-content-center">
+                
+                <p class="text-xs text-secondary mb-0">{{x.id_perfil.name}}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex px-2 py-1">
+              
+              <div class="d-flex flex-column justify-content-center">
+                
+                <p class="text-xs text-secondary mb-0">{{x.nombre}}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+           
+            <p class="text-xs text-secondary mb-0">{{x.descripcion}}</p>
+          </td>
+          <td>
+            
+             {% if x.estatus %}
+             <p class="text-xs text-secondary mb-0">PROCESO</p>
+             {% endif %}
+
+
+            {% if not x.estatus %}
+             <p class="text-xs text-secondary mb-0">TERMINADA</p>
+             {% endif %}
+
+
+          </td>
+
+       
+          
+        </tr>
+        {% endfor %}
+      
+      </tbody>
+    </table>
+  </div>
+
+  {% comment %} INICIO pAGINADOR {% endcomment %}
+  <nav aria-label="...">
+  <ul class="pagination pagination-lg">
+     {% if pagina.has_previous %}
+    <li class="page-item ">
+      <a class="page-link" href="?pagina={{pagina.previous_page_number}}" tabindex="-1">{{pagina.previous_page_number}}</a>
+    </li>
+    {% endif %}
+
+
+    <li class="page-item active"><a class="page-link" href="?pagina={{pagina.number}}"> {{pagina.number}}  </a></li>
+    
+    {% if  pagina.has_next %}
+    <li class="page-item "><a class="page-link" href="?pagina={{pagina.next_page_number}}">{{pagina.next_page_number}}</a></li>
+    {% endif %}
+
+</ul>
+</nav>
+
+
+  {% comment %} FIN pAGINADOR {% endcomment %}
+
+</div>
+
+{% comment %} FIN TABLA {% endcomment %}
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}
